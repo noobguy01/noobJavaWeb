@@ -1,0 +1,92 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>show</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="../static/style.css">
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+<div class="alert alert-primary" th:if="${success}" th:text="${success}"></div>
+<div class="alert alert-danger" th:if="${error}" th:text="${error}"></div>
+<nav class="navbar navbar-expand-lg bg-body-tertiary my-nav">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">个人备忘录</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse d-flex justify-content-between" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link " aria-current="page" href="/">主页</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/memorandum/edit">添加备忘录</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/memorandum/show">查看备忘录</a>
+                </li>
+
+            </ul>
+            <div class="nav-item d-flex justify-content-evenly login">
+                <div class="d-flex" th:if="!${user}">
+                    <a href="/login" class="nav-link">登录</a>
+                    <a href="/register" class="nav-link">注册</a>
+                </div>
+                <div class="" th:if="${user}" >
+                    <li class="d-flex nav-item dropdown ">
+                        <a th:text="${user.username}" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/logout">退出</a></li>
+
+                        </ul>
+                    </li>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="card" style="width: 30rem; margin: 0 auto" >
+    <div class="card-header">
+        您的备忘录
+    </div>
+    <div class="card-body">
+        <ul class="list-group list-group-flush">
+            <li th:each="obj:${userList}" class="list-group-item row d-flex my-pig">
+                <div class="d-flex flex-column col-7">
+                    <div th:text="${obj.title}" class="fs-4">烧饭</div>
+                    <div th:text="${obj.all_text}"  class="fs-5">仅剩1小时20分</div>
+                    <div th:text="${#dates.format(obj.time, 'dd/MMM/yyyy HH:mm')}" class="fs-6">2024/9/10/12/1</div>
+
+                </div>
+                <div class="col-4 d-flex align-items-end justify-content-between">
+                    <form action="/memorandum/delete" method="POST">
+                        <input type="hidden" th:value="${obj.id}"  name="id">
+                        <button class="btn btn-sm btn-danger" type="submit">删除</button>
+                    </form>
+
+                </div>
+            </li>
+
+        </ul>
+    </div>
+
+</div>
+
+
+</body>
+
+
+</html>
